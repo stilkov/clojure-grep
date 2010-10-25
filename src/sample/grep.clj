@@ -13,13 +13,15 @@
   (apply merge (map #(grep-in-file pattern %) files)))
 
 (defn print-matches [matches]
-  (doseq [[fname submatches] matches, [line-no, match] submatches]
+  (doseq [[fname submatches] matches
+	  [line-no match] submatches]
     (println (str fname ":" line-no ":" match))))
 	    
 (defn -main [pattern & files]
   (if (or (nil? pattern) (empty? files))
     (println "Usage: grep <pattern> <file...>")
     (do 
-      (println (format "grep started with pattern %s and file(s) %s" pattern (apply str (interpose ", " files))))
+      (println (format "grep started with pattern %s and file(s) %s"
+		       pattern (apply str (interpose ", " files))))
       (print-matches (grep-in-files (re-pattern pattern) files))
       (println "Done."))))
